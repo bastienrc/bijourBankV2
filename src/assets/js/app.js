@@ -1,10 +1,10 @@
-console.log("Bijour Bank !");
+console.log("Bijour Bank !")
 /**
  * init foundation
  */
 $(document).ready(function () {
-  $(document).foundation();
-});
+  $(document).foundation()
+})
 
 // Data Test
 const operationsData = [
@@ -12,7 +12,7 @@ const operationsData = [
     img: "./assets/images/sac-dargent.png",
     alt: "credit",
     title: "Rente",
-    subtitle: "mois de septembre",
+    description: "mois de septembre",
     total: 2879,
     isCredit: true
   },
@@ -20,7 +20,7 @@ const operationsData = [
     img: "./assets/images/depenses.png",
     alt: "depense",
     title: "Friterie",
-    subtitle: "mois de septembre",
+    description: "mois de septembre",
     total: 500,
     isCredit: false
   },
@@ -28,11 +28,33 @@ const operationsData = [
     img: "./assets/images/sac-dargent.png",
     alt: "credit",
     title: "Vinted",
-    subtitle: "mois de septembre",
+    description: "mois de septembre",
     total: 2000,
     isCredit: true
   }
 ]
+
+
+// Récupération de l'opération
+function addOperation (operator, title, description, total) {
+  return {
+    img: "./assets/images/sac-dargent.png",
+    alt: "credit",
+    title: title,
+    description: description,
+    total: total,
+    isCredit: operator === 'credit' ? true : false
+  }
+}
+
+const url = new URL(window.location.href)
+const operator = url.searchParams.get("operator")
+const title = url.searchParams.get("titre")
+const description = url.searchParams.get("desc")
+const total = url.searchParams.get("montant")
+
+operationsData.push(addOperation(operator, title, description, total))
+
 
 // Affichage des opérations
 const listOperations = document.getElementById("listOperations")
@@ -48,7 +70,7 @@ function operationTemplate(operation) {
         <div class="cell auto">
           <div>
             <h2>${operation.title}</h2>
-            <small>${operation.subtitle}</small>
+            <small>${operation.description}</small>
           </div>
         </div>
         <div class="cell small-3 text-right">
@@ -66,6 +88,3 @@ listOperations.innerHTML = ""
 operationsData.forEach(op => {
   listOperations.innerHTML += operationTemplate(op)
 });
-
-
-
