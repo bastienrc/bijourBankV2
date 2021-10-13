@@ -35,13 +35,14 @@ const operationsData = [
   }
 ]
 
-const operationForm = document.getElementById('operationForm')
-const submitForm = document.getElementById('submitForm')
 
+// Init
+const operationForm = document.getElementById('operationForm')
+const submitForm = document.querySelector('#operationForm button[type=submit]')
 const solde = document.getElementById('solde')
-solde.innerHTML = "1 000 000 €"
-const good = document.getElementsByClassName('good')[0]
-good.innerHTML = "Money, money, money, ..."
+const good = document.querySelector('.good')
+const listOperations = document.querySelector('main .grid-container')
+
 
 // Functions
 function operationTemplate(operation) {
@@ -71,7 +72,6 @@ function operationTemplate(operation) {
 }
 
 function affichageAllOperation (operationsData) {
-  const listOperations = document.getElementById("listOperations")
   if (operationsData.length === 0) {
     listOperations.innerHTML = "<center>Aucune opération !!!</center>"
   } else {
@@ -93,6 +93,17 @@ function addOperation (operator, title, description, total) {
   }
 }
 
+function setSolde(money) {
+  // TODO: format et calcul à faire
+  solde.innerHTML = "1 000 000.00€"
+
+  // TODO: phrase selon le montant
+  good.innerHTML = "Money, money, money, ..."
+}
+
+
+// Traitement
+setSolde(operationsData)
 
 // Récupération de l'opération
 submitForm.addEventListener('click', (e) => {
@@ -114,20 +125,20 @@ submitForm.addEventListener('click', (e) => {
   operationForm.montant.value = ""
 })
 
-const all = document.getElementById('all')
+const all = document.querySelector('.navHeader a')
 all.addEventListener('click', (e) => {
   affichageAllOperation(operationsData)
 })
 
-const credit = document.getElementById('credit')
+const credit = document.querySelector('.navHeader a:nth-child(2)')
 credit.addEventListener('click', (e) => {
   affichageAllOperation(operationsData.filter(op => op.isCredit))
 })
 
-const debit = document.getElementById('debit')
+const debit = document.querySelector('.navHeader a:nth-child(3)')
 debit.addEventListener('click', (e) => {
   console.log("trsuite")
-  affichageAllOperation(operationsData.filter(op => op.isCredit))
+  affichageAllOperation(operationsData.filter(op => !op.isCredit))
 })
 
 affichageAllOperation(operationsData)
