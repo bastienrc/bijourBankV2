@@ -43,9 +43,11 @@ const solde = document.getElementById('solde')
 const good = document.querySelector('.good')
 const listOperations = document.querySelector('main .grid-container')
 
-
+// Modification du DOM
+submitForm.setAttribute('data-close', '')
 // Functions
 function operationTemplate(operation) {
+  const rapportTotal = 50
   return `
     <div class="operation ${operation.isCredit ? "credit" : "debit"}">
       <div class="grid-x grid-padding-x align-middle">
@@ -63,7 +65,7 @@ function operationTemplate(operation) {
         <div class="cell small-3 text-right">
           <div>
             <p class="count">${operation.total}</p>
-            <small>800%</small>
+            <small>${rapportTotal}%</small>
           </div>
         </div>
       </div>
@@ -125,6 +127,7 @@ submitForm.addEventListener('click', (e) => {
   operationForm.montant.value = ""
 })
 
+// Navbar : « Tout | Crédit | Débit »
 const all = document.querySelector('.navHeader a')
 all.addEventListener('click', (e) => {
   affichageAllOperation(operationsData)
@@ -137,7 +140,6 @@ credit.addEventListener('click', (e) => {
 
 const debit = document.querySelector('.navHeader a:nth-child(3)')
 debit.addEventListener('click', (e) => {
-  console.log("trsuite")
   affichageAllOperation(operationsData.filter(op => !op.isCredit))
 })
 
