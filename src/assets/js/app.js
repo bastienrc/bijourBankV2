@@ -6,6 +6,7 @@ $(document).ready(function () {
   $(document).foundation()
 })
 
+
 // Data Test
 const operationsData = [
   {
@@ -34,30 +35,15 @@ const operationsData = [
   }
 ]
 
+const operationForm = document.getElementById('operationForm')
+const submitForm = document.getElementById('submitForm')
 
-// Récupération de l'opération
-function addOperation (operator, title, description, total) {
-  return {
-    img: "./assets/images/sac-dargent.png",
-    alt: "credit",
-    title: title,
-    description: description,
-    total: total,
-    isCredit: operator === 'credit' ? true : false
-  }
-}
+const solde = document.getElementById('solde')
+solde.innerHTML = "1 000 000 €"
+const good = document.getElementsByClassName('good')[0]
+good.innerHTML = "Money, money, money, ..."
 
-const url = new URL(window.location.href)
-const operator = url.searchParams.get("operator")
-const title = url.searchParams.get("titre")
-const description = url.searchParams.get("desc")
-const total = url.searchParams.get("montant")
-
-operationsData.push(addOperation(operator, title, description, total))
-
-
-// Affichage des opérations
-const listOperations = document.getElementById("listOperations")
+// Functions
 function operationTemplate(operation) {
   return `
     <div class="operation ${operation.isCredit ? "credit" : "debit"}">
@@ -84,7 +70,65 @@ function operationTemplate(operation) {
   `
 }
 
-listOperations.innerHTML = ""
-operationsData.forEach(op => {
-  listOperations.innerHTML += operationTemplate(op)
-});
+function affichageAllOperation (operationsData) {
+  const listOperations = document.getElementById("listOperations")
+  if (operationsData.length === 0) {
+    listOperations.innerHTML = "<center>Aucune opération !!!</center>"
+  } else {
+    listOperations.innerHTML = ""
+    operationsData.forEach(op => {
+      listOperations.innerHTML += operationTemplate(op)
+    })
+  }
+}
+
+function addOperation (operator, title, description, total) {
+  return {
+    img: "./assets/images/sac-dargent.png",
+    alt: "credit",
+    title: title,
+    description: description,
+    total: total,
+    isCredit: operator === 'credit' ? true : false
+  }
+}
+
+
+// Récupération de l'opération
+submitForm.addEventListener('click', (e) => {
+  e.preventDefault()
+  const op = addOperation(
+    operationForm.operator.value,
+    operationForm.titre.value,
+    operationForm.desc.value,
+    operationForm.montant.value
+  )
+  operationsData.push(op)
+
+  affichageAllOperation(operationsData)
+
+  // Init
+  operationForm.operator.value = "--"
+  operationForm.titre.value = ""
+  operationForm.desc.value = ""
+  operationForm.montant.value = ""
+})
+
+const all = document.getElementById('all')
+all.addEventListener('click', (e) => {
+  affichageAllOperation(operationsData)
+})
+
+const credit = document.getElementById('credit')
+credit.addEventListener('click', (e) => {
+  affichageAllOperation(operationsData.filter(op => op.isCredit))
+})
+
+const debit = document.getElementById('debit')
+debit.addEventListener('click', (e) => {
+  console.log("trsuite")
+  affichageAllOperation(operationsData.filter(op => op.isCredit))
+})
+
+affichageAllOperation(operationsData)
+
