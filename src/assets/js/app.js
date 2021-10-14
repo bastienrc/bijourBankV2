@@ -14,7 +14,7 @@ const operationsData = [
     alt: "credit",
     title: "Rente",
     description: "mois de septembre",
-    total: 2879,
+    total: 8000,
     isCredit: true
   },
   {
@@ -43,11 +43,17 @@ const solde = document.getElementById('solde')
 const good = document.querySelector('.good')
 const listOperations = document.querySelector('main .grid-container')
 
+
 // Modification du DOM
 submitForm.setAttribute('data-close', '')
+
+
 // Functions
+function formatBank(montant) {
+  return new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR' }).format(montant)
+}
+
 function operationTemplate(operation) {
-  const rapportTotal = 50
   return `
     <div class="operation ${operation.isCredit ? "credit" : "debit"}">
       <div class="grid-x grid-padding-x align-middle">
@@ -63,9 +69,9 @@ function operationTemplate(operation) {
           </div>
         </div>
         <div class="cell small-3 text-right">
-          <div>
+          <div class="montantOperation">
             <p class="count">${operation.total}</p>
-            <small>${rapportTotal}%</small>
+            <small ${operation.isCredit ? "data-credit" : "data-debit"}>0%</small>
           </div>
         </div>
       </div>
@@ -82,6 +88,7 @@ function affichageAllOperation (operationsData) {
       listOperations.innerHTML += operationTemplate(op)
     })
   }
+  ratioMontant()
 }
 
 function addOperation (operator, title, description, total) {
@@ -97,15 +104,37 @@ function addOperation (operator, title, description, total) {
 
 function setSolde(money) {
   // TODO: format et calcul à faire
-  solde.innerHTML = "1 000 000.00€"
+  solde.innerHTML = formatBank(2789898.43)
 
   // TODO: phrase selon le montant
   good.innerHTML = "Money, money, money, ..."
 }
 
+function totalCredit(operationsData) {
+  const opCredit = operationsData.filter(op => op.isCredit)
+  return opCredit.reduce((sum, montant) => sum + Number(montant.total), 0)
+}
+
+function totalDebit(operationsData) {
+  const opDebit = operationsData.filter(op => !op.isCredit)
+  return opDebit.reduce((sum, montant) => sum + Number(montant.total), 0)
+}
+
+function ratioMontant() {
+  const total = totalCredit(operationsData)
+  const montantOpList = document.getElementsByClassName('montantOperation')
+  for (let i = 0; i < montantOpList.length; i++) {
+    const montant = montantOpList[i].childNodes[1].innerText
+    let ratio = montantOpList[i].childNodes[3]
+    console.log(`${montant} * 100 / ${total} = ` + montant * 100 / total)
+    ratio.innerText = montant * 100 / total + '%'
+  }
+}
+
 
 // Traitement
 setSolde(operationsData)
+
 
 // Récupération de l'opération
 submitForm.addEventListener('click', (e) => {
@@ -144,4 +173,3 @@ debit.addEventListener('click', (e) => {
 })
 
 affichageAllOperation(operationsData)
-
