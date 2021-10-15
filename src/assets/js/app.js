@@ -62,11 +62,18 @@ function newOperation (operator, title, description, total) {
   }
 }
 
-function setSolde() {
-  // TODO: calcul à faire
+function setSolde(ops) {
+  soldeCredit = ops
+    .filter(op => op.isCredit)
+    .reduce((sum, montant) => sum + Number(montant.total), 0),
+
+  soldeDebit = ops
+    .filter(op => !op.isCredit)
+    .reduce((sum, montant) => sum + Number(montant.total), 0)
+
   document
     .getElementById('solde')
-    .innerHTML = formatBank(2789898.43)
+    .innerHTML = formatBank(soldeCredit - soldeDebit)
 }
 
 function setGood() {
@@ -104,6 +111,13 @@ function activeMenu(eltMenu) {
   eltMenu.setAttribute('class', 'active')
 }
 
+function cleanSubmitForm(operationForm) {
+  operationForm.operator.value = "--"
+  operationForm.titre.value = ""
+  operationForm.desc.value = ""
+  operationForm.montant.value = null
+}
+
 
 /**
  * Gestion des évènements
@@ -136,21 +150,16 @@ submitForm.addEventListener('click', (e) => {
   e.preventDefault()
   const operationForm = document.getElementById('operationForm')
 
-  const op = newOperation(
-    operationForm.operator.value,
-    operationForm.titre.value,
-    operationForm.desc.value,
-    operationForm.montant.value
-  )
+  // TODO: Tester ces données
+  const operator = operationForm.operator.value
+  const titre = operationForm.titre.value
+  const desc = operationForm.desc.value
+  const montant = operationForm.montant.value
+
+  const op = newOperation(operator, titre, desc, montant)
   operationsData.push(op)
-
   affichageOperations(operationsData)
-
-  // Init
-  operationForm.operator.value = "--"
-  operationForm.titre.value = ""
-  operationForm.desc.value = ""
-  operationForm.montant.value = ""
+  cleanSubmitForm(operationForm)
 })
 
 
@@ -183,14 +192,7 @@ const operationsData = [
   }
 ]
 
-
 const listOperations = document.querySelector('main .grid-container')
-
-
-setSolde()
-
-
-setGood()
-
-// Affichage des operationts
+setSolde(operationsData)
+setGood(operationsData)
 affichageOperations(operationsData)
