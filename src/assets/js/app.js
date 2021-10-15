@@ -97,6 +97,13 @@ function ratioMontant() {
   }
 }
 
+function activeMenu(eltMenu) {
+  all.removeAttribute('class','active')
+  credit.removeAttribute('class','active')
+  debit.removeAttribute('class','active')
+  eltMenu.setAttribute('class', 'active')
+}
+
 
 /**
  * Gestion des évènements
@@ -105,16 +112,19 @@ function ratioMontant() {
 // Navbar : « Tout | Crédit | Débit »
 const all = document.querySelector('.navHeader a')
 all.addEventListener('click', (e) => {
+  activeMenu(all)
   affichageOperations(operationsData)
 })
 
 const credit = document.querySelector('.navHeader a:nth-child(2)')
 credit.addEventListener('click', (e) => {
+  activeMenu(credit)
   affichageOperations(operationsData.filter(op => op.isCredit))
 })
 
 const debit = document.querySelector('.navHeader a:nth-child(3)')
 debit.addEventListener('click', (e) => {
+  activeMenu(debit)
   affichageOperations(operationsData.filter(op => !op.isCredit))
 })
 
