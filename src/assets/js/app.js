@@ -15,14 +15,17 @@ function formatBank(montant) {
 }
 
 function operationTemplate(operation) {
-  const imgC = "./assets/images/sac-dargent.png"
-  const imgD = "./assets/images/depenses.png"
+  const debitOrCredit = operation.isCredit ? "credit" : "debit"
+  const img = operation.isCredit
+    ? "./assets/images/sac-dargent.png"
+    : "./assets/images/depenses.png"
+
   return `
-    <div class="operation ${operation.isCredit ? "credit" : "debit"}">
+    <div class="operation ${debitOrCredit}">
       <div class="grid-x grid-padding-x align-middle">
         <div class="cell shrink">
           <div class="picto">
-            <img src="${operation.isCredit ? imgC : imgD}" alt="Illustration pour le ${operation.isCredit ? "Credit" : "Debit"}" />
+            <img src="${img}" alt="Illustration pour le ${debitOrCredit}" />
           </div>
         </div>
         <div class="cell auto">
@@ -48,6 +51,8 @@ function affichageOperations (operationsData) {
   } else {
     listOperations.innerHTML = ""
     operationsData.forEach(op => {
+      const total = op.isCredit ? totalCredit(operationsData) : totalDebit(operationsData)
+      op.ratio = (op.total * 100 / total).toFixed(2)
       listOperations.innerHTML += operationTemplate(op)
     })
   }
@@ -57,23 +62,16 @@ function newOperation (operator, title, description, total) {
   return {
     title: title,
     description: description,
-    total: total,
-    isCredit: operator === 'credit' ? true : false // TODO: Trouver meilleur syntaxe
+    total: Number(total),
+    isCredit: operator === 'credit',
+    ratio: 0
   }
 }
 
 function setSolde(ops) {
-  soldeCredit = ops
-    .filter(op => op.isCredit)
-    .reduce((sum, montant) => sum + Number(montant.total), 0),
-
-  soldeDebit = ops
-    .filter(op => !op.isCredit)
-    .reduce((sum, montant) => sum + Number(montant.total), 0)
-
   document
     .getElementById('solde')
-    .innerHTML = formatBank(soldeCredit - soldeDebit)
+    .innerHTML = formatBank(totalCredit(ops) - totalDebit(ops))
 }
 
 function setGood() {
@@ -91,17 +89,6 @@ function totalCredit(operationsData) {
 function totalDebit(operationsData) {
   const opDebit = operationsData.filter(op => !op.isCredit)
   return opDebit.reduce((sum, montant) => sum + Number(montant.total), 0)
-}
-
-function ratioMontant() {
-  const total = totalCredit(operationsData)
-  const montantOpList = document.getElementsByClassName('montantOperation')
-  for (let i = 0; i < montantOpList.length; i++) {
-    const montant = montantOpList[i].childNodes[1].innerText
-    let ratio = montantOpList[i].childNodes[3]
-    console.log(`${montant} * 100 / ${total} = ` + montant * 100 / total)
-    ratio.innerText = montant * 100 / total + '%'
-  }
 }
 
 function activeMenu(eltMenu) {
@@ -158,6 +145,7 @@ submitForm.addEventListener('click', (e) => {
 
   const op = newOperation(operator, titre, desc, montant)
   operationsData.push(op)
+
   affichageOperations(operationsData)
   cleanSubmitForm(operationForm)
 })
