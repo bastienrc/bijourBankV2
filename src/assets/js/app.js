@@ -50,10 +50,16 @@ function readAllOperations (operationsData) {
     listOperations.innerHTML = "<center>Aucune opération !!!</center>"
   } else {
     listOperations.innerHTML = ""
+    let solde = 0
     operationsData.forEach(op => {
+      // Calcul du ratio
       const total = op.isCredit ? totalCredit(operationsData) : totalDebit(operationsData)
       op.ratio = (op.total * 100 / total).toFixed(2)
       listOperations.innerHTML += templateOperation(op)
+      // dataGraph
+      const label = `${op.title} (${op.isCredit ? '+' : '-'} ${op.total})`
+      solde = op.isCredit ? (solde + op.total) : (solde - op.total)
+      addTemperature(label, solde)
     })
   }
 }
