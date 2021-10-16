@@ -68,17 +68,23 @@ function createOperation (operator, title, description, total) {
   }
 }
 
-function setSolde(ops) {
+function setHeader(ops) {
+  const solde = totalCredit(ops) - totalDebit(ops)
   document
     .getElementById('solde')
-    .innerHTML = formatBank(totalCredit(ops) - totalDebit(ops))
-}
+    .innerHTML = formatBank(solde)
 
-function setGood() {
-  // TODO: phrase selon le montant
-  document
-    .querySelector('.good')
-    .innerHTML = "Money, money, money, ..."
+  const commentSolde = document.querySelector('#solde + small')
+  let comments = []
+  if (solde > 0) {
+    comments = ['Nice !', 'Awesome !', 'Dude, tu geres !']
+    commentSolde.setAttribute('class', 'good')
+  } else {
+    comments = ['Oh My God !', 'Bientôt la fin ...', 'C\'est la banqueroute !']
+    commentSolde.setAttribute('class', 'bad')
+  }
+  const numComment = Math.floor(Math.random() * (comments.length))
+  commentSolde.innerHTML = comments[numComment]
 }
 
 function totalCredit(operationsData) {
@@ -148,6 +154,7 @@ submitForm.addEventListener('click', (e) => {
 
   readAllOperations(operationsData)
   cleanSubmitForm(operationForm)
+  setHeader(operationsData)
 })
 
 
@@ -181,8 +188,7 @@ const operationsData = [
 ]
 
 const listOperations = document.querySelector('main .grid-container')
-setSolde(operationsData)
-setGood(operationsData)
+setHeader(operationsData)
 readAllOperations(operationsData)
 
 // create, read (readOne, readAll), update, delete
