@@ -14,7 +14,7 @@ function formatBank(montant) {
   return new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR' }).format(montant)
 }
 
-function operationTemplate(operation) {
+function templateOperation(operation) {
   const debitOrCredit = operation.isCredit ? "credit" : "debit"
   const img = operation.isCredit
     ? "./assets/images/sac-dargent.png"
@@ -45,7 +45,7 @@ function operationTemplate(operation) {
   `
 }
 
-function affichageOperations (operationsData) {
+function readAllOperations (operationsData) {
   if (operationsData.length === 0) {
     listOperations.innerHTML = "<center>Aucune opération !!!</center>"
   } else {
@@ -53,12 +53,12 @@ function affichageOperations (operationsData) {
     operationsData.forEach(op => {
       const total = op.isCredit ? totalCredit(operationsData) : totalDebit(operationsData)
       op.ratio = (op.total * 100 / total).toFixed(2)
-      listOperations.innerHTML += operationTemplate(op)
+      listOperations.innerHTML += templateOperation(op)
     })
   }
 }
 
-function newOperation (operator, title, description, total) {
+function createOperation (operator, title, description, total) {
   return {
     title: title,
     description: description,
@@ -114,19 +114,19 @@ function cleanSubmitForm(operationForm) {
 const all = document.querySelector('.navHeader a')
 all.addEventListener('click', (e) => {
   activeMenu(all)
-  affichageOperations(operationsData)
+  readAllOperations(operationsData)
 })
 
 const credit = document.querySelector('.navHeader a:nth-child(2)')
 credit.addEventListener('click', (e) => {
   activeMenu(credit)
-  affichageOperations(operationsData.filter(op => op.isCredit))
+  readAllOperations(operationsData.filter(op => op.isCredit))
 })
 
 const debit = document.querySelector('.navHeader a:nth-child(3)')
 debit.addEventListener('click', (e) => {
   activeMenu(debit)
-  affichageOperations(operationsData.filter(op => !op.isCredit))
+  readAllOperations(operationsData.filter(op => !op.isCredit))
 })
 
 
@@ -143,10 +143,10 @@ submitForm.addEventListener('click', (e) => {
   const desc = operationForm.desc.value
   const montant = operationForm.montant.value
 
-  const op = newOperation(operator, titre, desc, montant)
+  const op = createOperation(operator, titre, desc, montant)
   operationsData.push(op)
 
-  affichageOperations(operationsData)
+  readAllOperations(operationsData)
   cleanSubmitForm(operationForm)
 })
 
@@ -183,4 +183,15 @@ const operationsData = [
 const listOperations = document.querySelector('main .grid-container')
 setSolde(operationsData)
 setGood(operationsData)
-affichageOperations(operationsData)
+readAllOperations(operationsData)
+
+// create, read (readOne, readAll), update, delete
+
+// TODO: Vérifier les entrées
+// TODO: Soumettre le formulaire en asynchrone
+// TODO: Ajouter un darkMode
+// TODO: Générer de nouvelles opérations
+// TODO: Supprimer une opération
+// TODO: Éditer une opération
+// TODO: Mettre les données dans le graphique
+// TODO: Stocker les données en localeStorage
