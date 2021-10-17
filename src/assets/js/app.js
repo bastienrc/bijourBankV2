@@ -50,18 +50,25 @@ function readAllOperations (operationsData) {
     listOperations.innerHTML = "<center>Aucune opération !!!</center>"
   } else {
     listOperations.innerHTML = ""
-    let solde = 0
     operationsData.forEach(op => {
       // Calcul du ratio
       const total = op.isCredit ? totalCredit(operationsData) : totalDebit(operationsData)
       op.ratio = (op.total * 100 / total).toFixed(2)
       listOperations.innerHTML += templateOperation(op)
-      // dataGraph
-      const label = `${op.title} (${op.isCredit ? '+' : '-'} ${op.total})`
-      solde = op.isCredit ? (solde + op.total) : (solde - op.total)
-      addTemperature(label, solde)
     })
   }
+}
+
+function readAllGraph(operationsData) {
+  let solde = 0
+  config.data.labels = []
+  config.data.datasets[0].data = []
+  chart.update()
+  operationsData.forEach(op => {
+    const label = `${op.title} (${op.isCredit ? '+' : '-'} ${op.total})`
+    solde = op.isCredit ? (solde + op.total) : (solde - op.total)
+    addTemperature(label, solde)
+  })
 }
 
 function createOperation (operator, title, description, total) {
@@ -127,18 +134,21 @@ const all = document.querySelector('.navHeader a')
 all.addEventListener('click', (e) => {
   activeMenu(all)
   readAllOperations(operationsData)
+  readAllGraph(operationsData)
 })
 
 const credit = document.querySelector('.navHeader a:nth-child(2)')
 credit.addEventListener('click', (e) => {
   activeMenu(credit)
   readAllOperations(operationsData.filter(op => op.isCredit))
+  readAllGraph(operationsData)
 })
 
 const debit = document.querySelector('.navHeader a:nth-child(3)')
 debit.addEventListener('click', (e) => {
   activeMenu(debit)
   readAllOperations(operationsData.filter(op => !op.isCredit))
+  readAllGraph(operationsData)
 })
 
 
@@ -159,6 +169,7 @@ submitForm.addEventListener('click', (e) => {
   operationsData.push(op)
 
   readAllOperations(operationsData)
+  readAllGraph(operationsData)
   cleanSubmitForm(operationForm)
   setHeader(operationsData)
 })
@@ -196,6 +207,7 @@ const operationsData = [
 const listOperations = document.querySelector('main .grid-container')
 setHeader(operationsData)
 readAllOperations(operationsData)
+readAllGraph(operationsData)
 
 // create, read (readOne, readAll), update, delete
 
@@ -205,5 +217,5 @@ readAllOperations(operationsData)
 // TODO: Générer de nouvelles opérations
 // TODO: Supprimer une opération
 // TODO: Éditer une opération
-// TODO: Mettre les données dans le graphique
+// ~~TODO: Mettre les données dans le graphique~~
 // TODO: Stocker les données en localeStorage
