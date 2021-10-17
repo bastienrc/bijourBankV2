@@ -1,4 +1,4 @@
-console.log("Bijour Bank !")
+console.log('Bijour Bank !')
 /**
  * init foundation
  */
@@ -10,15 +10,15 @@ $(document).ready(function () {
 /**
  * Fonctions
  */
-function formatBank(montant) {
+function formatBank (montant) {
   return new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR' }).format(montant)
 }
 
-function templateOperation(operation) {
-  const debitOrCredit = operation.isCredit ? "credit" : "debit"
+function templateOperation (operation) {
+  const debitOrCredit = operation.isCredit ? 'credit' : 'debit'
   const img = operation.isCredit
-    ? "./assets/images/sac-dargent.png"
-    : "./assets/images/depenses.png"
+    ? './assets/images/sac-dargent.png'
+    : './assets/images/depenses.png'
 
   return `
     <div class="operation ${debitOrCredit}">
@@ -47,9 +47,9 @@ function templateOperation(operation) {
 
 function readAllOperations (operationsData) {
   if (operationsData.length === 0) {
-    listOperations.innerHTML = "<center>Aucune opération !!!</center>"
+    listOperations.innerHTML = '<center>Aucune opération !!!</center>'
   } else {
-    listOperations.innerHTML = ""
+    listOperations.innerHTML = ''
     operationsData.forEach(op => {
       // Calcul du ratio
       const total = op.isCredit ? totalCredit(operationsData) : totalDebit(operationsData)
@@ -59,7 +59,7 @@ function readAllOperations (operationsData) {
   }
 }
 
-function readAllGraph(operationsData) {
+function readAllGraph (operationsData) {
   let solde = 0
   config.data.labels = []
   config.data.datasets[0].data = []
@@ -81,11 +81,9 @@ function createOperation (operator, title, description, total) {
   }
 }
 
-function setHeader(ops) {
+function setHeader (ops) {
   const solde = totalCredit(ops) - totalDebit(ops)
-  document
-    .getElementById('solde')
-    .innerHTML = formatBank(solde)
+  document.getElementById('solde').innerHTML = formatBank(solde)
 
   const commentSolde = document.querySelector('#solde + small')
   let comments = []
@@ -100,27 +98,27 @@ function setHeader(ops) {
   commentSolde.innerHTML = comments[numComment]
 }
 
-function totalCredit(operationsData) {
+function totalCredit (operationsData) {
   const opCredit = operationsData.filter(op => op.isCredit)
   return opCredit.reduce((sum, montant) => sum + Number(montant.total), 0)
 }
 
-function totalDebit(operationsData) {
+function totalDebit (operationsData) {
   const opDebit = operationsData.filter(op => !op.isCredit)
   return opDebit.reduce((sum, montant) => sum + Number(montant.total), 0)
 }
 
-function activeMenu(eltMenu) {
-  all.removeAttribute('class','active')
-  credit.removeAttribute('class','active')
-  debit.removeAttribute('class','active')
+function activeMenu (eltMenu) {
+  all.removeAttribute('class', 'active')
+  credit.removeAttribute('class', 'active')
+  debit.removeAttribute('class', 'active')
   eltMenu.setAttribute('class', 'active')
 }
 
-function cleanSubmitForm(operationForm) {
-  operationForm.operator.value = "--"
-  operationForm.titre.value = ""
-  operationForm.desc.value = ""
+function cleanSubmitForm (operationForm) {
+  operationForm.operator.value = '--'
+  operationForm.titre.value = ''
+  operationForm.desc.value = ''
   operationForm.montant.value = null
 }
 
@@ -150,7 +148,6 @@ debit.addEventListener('click', (e) => {
   readAllOperations(operationsData.filter(op => !op.isCredit))
   readAllGraph(operationsData)
 })
-
 
 // Form new operation
 const submitForm = document.querySelector('#operationForm button[type=submit]')
@@ -182,22 +179,22 @@ submitForm.addEventListener('click', (e) => {
 // Data Test
 const operationsData = [
   {
-    title: "Rente",
-    description: "mois de septembre",
+    title: 'Rente',
+    description: 'mois de septembre',
     total: 8000,
     isCredit: true,
     ratio: 0
   },
   {
-    title: "Friterie",
-    description: "mois de septembre",
+    title: 'Friterie',
+    description: 'mois de septembre',
     total: 500,
     isCredit: false,
     ratio: 0
   },
   {
-    title: "Vinted",
-    description: "mois de septembre",
+    title: 'Vinted',
+    description: 'mois de septembre',
     total: 2000,
     isCredit: true,
     ratio: 0
@@ -208,14 +205,3 @@ const listOperations = document.querySelector('main .grid-container')
 setHeader(operationsData)
 readAllOperations(operationsData)
 readAllGraph(operationsData)
-
-// create, read (readOne, readAll), update, delete
-
-// TODO: Vérifier les entrées
-// TODO: Soumettre le formulaire en asynchrone
-// TODO: Ajouter un darkMode
-// TODO: Générer de nouvelles opérations
-// TODO: Supprimer une opération
-// TODO: Éditer une opération
-// ~~TODO: Mettre les données dans le graphique~~
-// TODO: Stocker les données en localeStorage
