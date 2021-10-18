@@ -161,6 +161,7 @@ submitForm.addEventListener('click', (e) => {
 
   const op = createOperation(operator, titre, desc, montant)
   operationsData.push(op)
+  localStorage.setItem('datas', JSON.stringify(operationsData))
 
   cleanSubmitForm(operationForm)
   setHeader(operationsData)
@@ -175,6 +176,18 @@ submitForm.addEventListener('click', (e) => {
 
 // Data Test
 let operationsData = []
+if (localStorage.getItem('datas')) {
+  operationsData = JSON.parse(localStorage.getItem('datas'))
+}
+
+if (localStorage.getItem('darkmode')) {
+  if (JSON.parse(localStorage.getItem('darkmode'))) {
+    document.querySelector('body').setAttribute("dark", '')
+  } else {
+    document.querySelector('body').removeAttribute("dark")
+  }
+}
+
 
 // Affichage principal
 const listOperations = document.querySelector('main .grid-container')
@@ -194,7 +207,8 @@ header.insertAdjacentHTML('afterbegin', optionsMenu)
 
 const darkmode = document.getElementById('darkmode')
 darkmode.addEventListener('click', (e) => {
-  document.querySelector('body').toggleAttribute("dark")
+  const darkmodeToggle = document.querySelector('body').toggleAttribute("dark")
+  localStorage.setItem('darkmode', JSON.stringify(darkmodeToggle))
 })
 
 const reset = document.getElementById('reset')
@@ -202,6 +216,7 @@ reset.addEventListener('click', (e) => {
   document.querySelector('main .grid-container').innerHTML = '<center>Aucune opération !!!</center>'
   operationsData = []
   readAllGraph(operationsData)
+  localStorage.clear()
 })
 
 const addData = document.getElementById('addData')
@@ -229,6 +244,7 @@ addData.addEventListener('click', (e) => {
       ratio: 0
     }
   ]
+  localStorage.setItem('datas', JSON.stringify(operationsData))
   setHeader(operationsData)
   readAllGraph(operationsData)
   readAllOperations(operationsData)
