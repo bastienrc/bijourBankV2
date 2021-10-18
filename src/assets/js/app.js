@@ -174,31 +174,83 @@ submitForm.addEventListener('click', (e) => {
  */
 
 // Data Test
-const operationsData = [
-  {
-    title: 'Rente',
-    description: 'mois de septembre',
-    total: 8000,
-    isCredit: true,
-    ratio: 0
-  },
-  {
-    title: 'Friterie',
-    description: 'mois de septembre',
-    total: 500,
-    isCredit: false,
-    ratio: 0
-  },
-  {
-    title: 'Vinted',
-    description: 'mois de septembre',
-    total: 2000,
-    isCredit: true,
-    ratio: 0
-  }
-]
+let operationsData = []
 
+// Affichage principal
 const listOperations = document.querySelector('main .grid-container')
 setHeader(operationsData)
 readAllOperations(operationsData)
 readAllGraph(operationsData)
+
+// Options supplémentaire
+const header = document.querySelector('header')
+
+const optionsStyle = `
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+`
+
+const buttonStyle = `
+  font-size: 2rem;
+  line-height: 3rem;
+  width: 50px;
+  height: 50px;
+  background: black;
+  color: white;
+  padding: 0.5rem;
+  border-radius: 50%;
+  margin: 0.5rem
+`
+
+const optionsMenu = `
+  <div id="options" style="${optionsStyle}">
+    <button id="darkmode" style="${buttonStyle}" title="Reset">D</button>
+    <button id="reset" style="${buttonStyle}" title="Reset">0</button>
+    <button id="addData" style="${buttonStyle}" title="Générer des données">+</button>
+  </div>`
+header.insertAdjacentHTML('afterbegin', optionsMenu)
+
+const darkmode = document.getElementById('darkmode')
+darkmode.addEventListener('click', (e) => {
+  document.body.style.background = "#333"
+  document.body.style.color = "#fff"
+})
+
+const reset = document.getElementById('reset')
+reset.addEventListener('click', (e) => {
+  document.querySelector('main .grid-container').innerHTML = '<center>Aucune opération !!!</center>'
+  operationsData = []
+})
+
+const addData = document.getElementById('addData')
+addData.addEventListener('click', (e) => {
+  operationsData = [
+    {
+      title: 'Rente',
+      description: 'mois de septembre',
+      total: 8000,
+      isCredit: true,
+      ratio: 0
+    },
+    {
+      title: 'Friterie',
+      description: 'mois de septembre',
+      total: 500,
+      isCredit: false,
+      ratio: 0
+    },
+    {
+      title: 'Vinted',
+      description: 'mois de septembre',
+      total: 2000,
+      isCredit: true,
+      ratio: 0
+    }
+  ]
+  setHeader(operationsData)
+  readAllGraph(operationsData)
+  readAllOperations(operationsData)
+})
