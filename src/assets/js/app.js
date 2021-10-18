@@ -132,21 +132,18 @@ const all = document.querySelector('.navHeader a')
 all.addEventListener('click', (e) => {
   activeMenu(all)
   readAllOperations(operationsData)
-  readAllGraph(operationsData)
 })
 
 const credit = document.querySelector('.navHeader a:nth-child(2)')
 credit.addEventListener('click', (e) => {
   activeMenu(credit)
   readAllOperations(operationsData.filter(op => op.isCredit))
-  readAllGraph(operationsData)
 })
 
 const debit = document.querySelector('.navHeader a:nth-child(3)')
 debit.addEventListener('click', (e) => {
   activeMenu(debit)
   readAllOperations(operationsData.filter(op => !op.isCredit))
-  readAllGraph(operationsData)
 })
 
 // Form new operation
@@ -165,10 +162,10 @@ submitForm.addEventListener('click', (e) => {
   const op = createOperation(operator, titre, desc, montant)
   operationsData.push(op)
 
-  readAllOperations(operationsData)
-  readAllGraph(operationsData)
   cleanSubmitForm(operationForm)
   setHeader(operationsData)
+  readAllGraph(operationsData)
+  readAllOperations(operationsData)
 })
 
 
