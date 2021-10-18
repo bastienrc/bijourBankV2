@@ -201,6 +201,7 @@ const reset = document.getElementById('reset')
 reset.addEventListener('click', (e) => {
   document.querySelector('main .grid-container').innerHTML = '<center>Aucune opération !!!</center>'
   operationsData = []
+  readAllGraph(operationsData)
 })
 
 const addData = document.getElementById('addData')
