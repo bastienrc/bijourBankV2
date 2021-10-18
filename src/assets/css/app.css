@@ -1,6 +1,51 @@
 @import url("https://fonts.googleapis.com/css2?family=Raleway:wght@400;800&display=swap");
+
+:root {
+  /* Général */
+  --color: #855000;
+  --background: #f1bc0d;
+  /* Header */
+  --color-header: #f1bc0d;
+  --background-header: rgba(255, 255, 255, 0.80);
+  /* Header nav tout/crédit/débit */
+  --color-header-nav: #f1bc0d;
+  --background-header-nav: #855000;
+  --color-header-nav-hover: #855000;
+  --background-header-nav-hover: #f1bc0d;
+  /* Buttons */
+  --color-button: white;
+  --background-button: #855000;
+  --color-button-hover: white;
+  --background-button-hover: #5c3803;
+  --color-button-focus: white;
+  --background-button-focus: #5c3803;
+}
+
+/* Dark mode CSS */
+[dark] {
+  /* Général */
+  --color: #0f0;
+  --background: #333;
+  /* Header */
+  --color-header: #090;
+  --background-header: #1e1e1ecc;
+  /* Header nav tout/crédit/débit */
+  --color-header-nav: #333;
+  --background-header-nav: #090;
+  --color-header-nav-hover: #0f0;
+  --background-header-nav-hover: #555;
+  /* Buttons */
+  --color-button: white;
+  --background-button: #090;
+  --color-button-hover: white;
+  --background-button-hover: #0D0;
+  --color-button-focus: white;
+  --background-button-focus: #0D0;
+}
+
 body {
-  background-color: #f2f2f2;
+  background: var(--background);
+  color: var(--color);
   font-family: "Raleway", sans-serif;
 }
 
@@ -9,40 +54,58 @@ img {
   height: auto;
 }
 
-.pTop50 {
-  padding-top: 50px;
+#exampleModal1 {
+  color: var(--color);
+  background: var(--background);
 }
+
+.pTop50 { padding-top: 50px }
+
 .add {
   position: fixed;
   bottom: 20px;
   right: 20px;
   z-index: 9;
 }
+
 .add button {
   margin: 0;
   border-radius: 50%;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+  color: var(--color-button);
+  background: var(--background-button);
 }
+
+.add button:hover {
+  color: var(--color-button-hover);
+  background: var(--background-button-hover)
+}
+
+.add button:focus {
+  color: var(--color-button-focus);
+  background: var(--background-button-focus)
+}
+
 header {
   position: sticky;
-  background: rgba(255, 255, 255, 0.8);
+  background: var(--background-header);
   backdrop-filter: blur(2px);
   top: 0;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
   margin-bottom: 50px;
 }
+
 .solde {
   font-size: 2.5rem;
   line-height: 1.8rem;
   margin: 0;
   font-weight: 800;
+  color: var(--color-header);
 }
-.good {
-  color: green;
-}
-.bad {
-  color: red;
-}
+
+.good { color: green }
+.bad { color: red }
+
 .navHeader {
   display: flex;
   justify-content: space-around;
@@ -51,54 +114,75 @@ header {
   overflow: hidden;
   margin: 10px 0 20px 0;
 }
+
 .navHeader a {
   display: block;
   flex: 1;
   text-align: center;
   padding: 2px 0;
-}
-.navHeader a.active,
-.navHeader a:hover {
-  background-color: black;
-  color: white;
+  color: var(--color-header-nav);
+  background-color: var(--background-header-nav);
 }
 
-.operation {
-  margin-bottom: 20px;
+.navHeader a.active, .navHeader a:hover {
+  background-color: var(--background-header-nav-hover);
+  color: var(--color-header-nav-hover);
 }
-.operation .picto img {
-  width: 35px;
-}
-.operation h2,
-.operation .count {
+
+.operation { margin-bottom: 20px }
+
+.operation .picto img { width: 35px }
+
+.operation h2, .operation .count {
   margin: 0;
   font-size: 1.2rem;
   line-height: 1;
   font-weight: 800;
 }
-.operation .count {
-  font-size: 1rem;
-}
-.operation small {
-  color: grey;
-}
 
-.operation.debit .count {
-  color: red;
-}
+.operation .count { font-size: 1rem }
+.operation small { color: grey }
+.operation.debit .count { color: red; }
+.reveal h2 { margin-bottom: 20px }
 
-.reveal h2 {
-  margin-bottom: 20px;
-}
 .btSubmit {
   font-size: 3rem;
   border: 1px solid grey;
   padding: 10px;
   border-radius: 8px !important;
-  background-color: #225e96;
   transition: 0.3s;
+  color: var(--color-button);
+  background: var(--background-button);
 }
+
 .btSubmit:hover {
   cursor: pointer;
   transform: scale(1.1);
+  color: var(--color-button-hover);
+  background: var(--background-button-hover);
+}
+
+#options {
+  position: fixed;
+  display: flex;
+  flex-direction: column;
+  top: 1rem;
+  left: 1rem;
+}
+
+button.optionsButton {
+  margin: 5px;
+  border-radius: 50%;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+  color: var(--color-button);
+  background: var(--background-button);
+}
+
+button.optionsButton:hover {
+  color: var(--color-button-hover);
+  background: var(--background-button-hover) }
+
+button.optionsButton:focus {
+  color: var(--color-button-focus);
+  background: var(--background-button-focus)
 }
