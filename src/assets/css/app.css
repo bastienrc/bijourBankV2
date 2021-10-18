@@ -129,7 +129,23 @@ header {
   color: var(--color-header-nav-hover);
 }
 
-.operation { margin-bottom: 20px }
+.operation {
+  position: relative;
+  padding: 10px 0;
+}
+
+.operation:hover {
+  background-color: rgba(100, 100, 100, 0.2);
+  padding: 10px 0;
+}
+
+.operation::after:hover {
+  display: block;
+  content: 'Supp';
+  background-color: #090;
+  width: 100%;
+  height: 100%;
+}
 
 .operation .picto img { width: 35px }
 
