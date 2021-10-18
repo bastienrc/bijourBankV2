@@ -186,30 +186,23 @@ readAllGraph(operationsData)
 const header = document.querySelector('header')
 
 const optionsStyle = `
+  position: fixed;
   display: flex;
   flex-direction: column;
-  position: absolute;
   top: 1rem;
   left: 1rem;
 `
-
 const buttonStyle = `
-  font-size: 2rem;
-  line-height: 3rem;
-  width: 50px;
-  height: 50px;
-  background: black;
-  color: white;
-  padding: 0.5rem;
+  margin: 5px;
   border-radius: 50%;
-  margin: 0.5rem
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
 `
 
 const optionsMenu = `
-  <div id="options" style="${optionsStyle}">
-    <button id="darkmode" style="${buttonStyle}" title="Reset">D</button>
-    <button id="reset" style="${buttonStyle}" title="Reset">0</button>
-    <button id="addData" style="${buttonStyle}" title="Générer des données">+</button>
+  <div id="options" style="${optionsStyle}" >
+    <button id="darkmode" style="${buttonStyle}" class="button" title="Reset">D</button>
+    <button id="reset" style="${buttonStyle}" class="button" title="Reset">0</button>
+    <button id="addData" style="${buttonStyle}" class="button" title="Générer des données">+</button>
   </div>`
 header.insertAdjacentHTML('afterbegin', optionsMenu)
 
