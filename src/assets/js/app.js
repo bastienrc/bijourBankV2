@@ -14,7 +14,7 @@ function formatBank (montant) {
   return new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR' }).format(montant)
 }
 
-function templateOperation (operation) {
+function templateOperation (operation, id) {
   const debitOrCredit = operation.isCredit ? 'credit' : 'debit'
   const img = operation.isCredit
     ? './assets/images/sac-dargent.png'
@@ -40,6 +40,11 @@ function templateOperation (operation) {
             <small>${operation.ratio}%</small>
           </div>
         </div>
+        <div class="cell small-1 text-right">
+          <div>
+            <button value="${id}" onClick="deleteOperation(this)">X</button>
+          </div>
+        </div>
       </div>
     </div>
   `
@@ -50,11 +55,13 @@ function readAllOperations (operationsData) {
     listOperations.innerHTML = '<center>Aucune opération !!!</center>'
   } else {
     listOperations.innerHTML = ''
+    let id = 0
     operationsData.forEach(op => {
       // Calcul du ratio
       const total = op.isCredit ? totalCredit(operationsData) : totalDebit(operationsData)
       op.ratio = (op.total * 100 / total).toFixed(2)
-      listOperations.innerHTML += templateOperation(op)
+      listOperations.innerHTML += templateOperation(op, id)
+      id++
     })
   }
 }
@@ -120,6 +127,15 @@ function cleanSubmitForm (operationForm) {
   operationForm.titre.value = ''
   operationForm.desc.value = ''
   operationForm.montant.value = null
+}
+
+function deleteOperation(id) {
+  operationsData.splice(parseInt(id.value),1)
+  console.log(id.value)
+  localStorage.setItem('datas', JSON.stringify(operationsData))
+  setHeader(operationsData)
+  readAllGraph(operationsData)
+  readAllOperations(operationsData)
 }
 
 
@@ -223,6 +239,7 @@ const addData = document.getElementById('addData')
 addData.addEventListener('click', (e) => {
   operationsData = [
     {
+      id: 1577833200,
       title: 'Rente',
       description: 'mois de septembre',
       total: 8000,
@@ -230,6 +247,7 @@ addData.addEventListener('click', (e) => {
       ratio: 0
     },
     {
+      id: 1577919600,
       title: 'Friterie',
       description: 'mois de septembre',
       total: 500,
@@ -237,6 +255,7 @@ addData.addEventListener('click', (e) => {
       ratio: 0
     },
     {
+      id: 1578006000,
       title: 'Vinted',
       description: 'mois de septembre',
       total: 2000,
