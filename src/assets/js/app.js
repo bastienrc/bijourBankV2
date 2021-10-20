@@ -163,17 +163,30 @@ debit.addEventListener('click', (e) => {
 })
 
 // Form new operation
+const operationForm = document.getElementById('operationForm')
+operationForm.setAttribute('method', 'POST')
 const submitForm = document.querySelector('#operationForm button[type=submit]')
 submitForm.setAttribute('data-close', '')
-submitForm.addEventListener('click', (e) => {
-  e.preventDefault()
-  const operationForm = document.getElementById('operationForm')
 
-  // TODO: Tester ces données
+operationForm.addEventListener('submit', (e) => {
+  e.preventDefault()
+
+  // let opForm = {}
+  // Array.from(new FormData(operationForm), (entry) => {
+  //   opForm[entry[0]] = entry[1]
+  // })
+  // console.table(opForm)
+
   const operator = operationForm.operator.value
   const titre = operationForm.titre.value
   const desc = operationForm.desc.value
   const montant = operationForm.montant.value
+
+  // if (operationForm.desc.value == "") {
+  //   e.preventDefault()
+  //   alert("Pensez à taper un message !")
+  //   operationForm.desc.focus()
+  // }
 
   const op = createOperation(operator, titre, desc, montant)
   operationsData.push(op)
@@ -229,10 +242,11 @@ darkmode.addEventListener('click', (e) => {
 
 const reset = document.getElementById('reset')
 reset.addEventListener('click', (e) => {
-  document.querySelector('main .grid-container').innerHTML = '<center>Aucune opération !!!</center>'
   operationsData = []
-  readAllGraph(operationsData)
+  document.querySelector('main .grid-container').innerHTML = '<center>Aucune opération !!!</center>'
   localStorage.clear()
+  setHeader(operationsData)
+  readAllGraph(operationsData)
 })
 
 const addData = document.getElementById('addData')
