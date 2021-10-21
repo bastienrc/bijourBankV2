@@ -154,12 +154,14 @@ const credit = document.querySelector('.navHeader a:nth-child(2)')
 credit.addEventListener('click', (e) => {
   activeMenu(credit)
   readAllOperations(operationsData.filter(op => op.isCredit))
+  activeMenu(all)
 })
 
 const debit = document.querySelector('.navHeader a:nth-child(3)')
 debit.addEventListener('click', (e) => {
   activeMenu(debit)
   readAllOperations(operationsData.filter(op => !op.isCredit))
+  activeMenu(all)
 })
 
 // Form new operation
