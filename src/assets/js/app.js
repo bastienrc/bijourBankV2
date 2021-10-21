@@ -14,7 +14,7 @@ function formatBank (montant) {
   return new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR' }).format(montant)
 }
 
-function templateOperation (operation, id) {
+function templateOperation (operation) {
   const debitOrCredit = operation.isCredit ? 'credit' : 'debit'
   const img = operation.isCredit
     ? './assets/images/sac-dargent.png'
@@ -42,7 +42,7 @@ function templateOperation (operation, id) {
         </div>
         <div class="cell small-1 text-right">
           <div>
-            <button value="${id}" onClick="deleteOperation(this)">X</button>
+            <button value="${operation.id}" onClick="deleteOperation(this)">X</button>
           </div>
         </div>
       </div>
@@ -130,8 +130,8 @@ function cleanSubmitForm (operationForm) {
 }
 
 function deleteOperation(id) {
-  operationsData.splice(parseInt(id.value),1)
-  console.log(id.value)
+  const op = operationsData.findIndex(op => op.id == parseInt(id.value))
+  operationsData.splice(op,1)
   localStorage.setItem('datas', JSON.stringify(operationsData))
   setHeader(operationsData)
   readAllGraph(operationsData)
@@ -188,7 +188,7 @@ submitForm.addEventListener('click', (e) => {
     // Ferme la modale du form
     document.querySelector('.reveal-overlay').style.display = 'none'
     document.querySelector('html').className = ''
-    
+
     // Nettoyage et rechargement des différents éléments
     cleanSubmitForm(operationForm)
     setHeader(operationsData)
