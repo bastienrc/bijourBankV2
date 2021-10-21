@@ -163,39 +163,26 @@ debit.addEventListener('click', (e) => {
 })
 
 // Form new operation
-const operationForm = document.getElementById('operationForm')
+const operationForm = document.forms[0]
 operationForm.setAttribute('method', 'POST')
 const submitForm = document.querySelector('#operationForm button[type=submit]')
-submitForm.setAttribute('data-close', '')
 
-operationForm.addEventListener('submit', (e) => {
-  e.preventDefault()
+submitForm.addEventListener('click', (e) => {
+  if (document.getElementById("operator").value == "--") {
+    e.preventDefault()
+    const message = '<p>Veillez chossir entre débit et crédit.</p>'
+    document.getElementById("operator").insertAdjacentHTML('beforebegin', message)
+    document.getElementById("operator").focus()
+  } else if (operationForm.titre.value != '' && operationForm.montant.value != '') {
+    const operator = operationForm.operator.value
+    const titre = operationForm.titre.value
+    const desc = operationForm.desc.value
+    const montant = operationForm.montant.value
 
-  // let opForm = {}
-  // Array.from(new FormData(operationForm), (entry) => {
-  //   opForm[entry[0]] = entry[1]
-  // })
-  // console.table(opForm)
-
-  const operator = operationForm.operator.value
-  const titre = operationForm.titre.value
-  const desc = operationForm.desc.value
-  const montant = operationForm.montant.value
-
-  // if (operationForm.desc.value == "") {
-  //   e.preventDefault()
-  //   alert("Pensez à taper un message !")
-  //   operationForm.desc.focus()
-  // }
-
-  const op = createOperation(operator, titre, desc, montant)
-  operationsData.push(op)
-  localStorage.setItem('datas', JSON.stringify(operationsData))
-
-  cleanSubmitForm(operationForm)
-  setHeader(operationsData)
-  readAllGraph(operationsData)
-  readAllOperations(operationsData)
+    const op = createOperation(operator, titre, desc, montant)
+    operationsData.push(op)
+    localStorage.setItem('datas', JSON.stringify(operationsData))
+  }
 })
 
 
