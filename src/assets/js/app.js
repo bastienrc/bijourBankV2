@@ -166,22 +166,34 @@ debit.addEventListener('click', (e) => {
 const operationForm = document.forms[0]
 operationForm.setAttribute('method', 'POST')
 const submitForm = document.querySelector('#operationForm button[type=submit]')
+document.getElementById("operator").insertAdjacentHTML('beforebegin', '<p id="msgSecu"></p>')
 
 submitForm.addEventListener('click', (e) => {
   if (document.getElementById("operator").value == "--") {
     e.preventDefault()
-    const message = '<p>Veillez chossir entre débit et crédit.</p>'
-    document.getElementById("operator").insertAdjacentHTML('beforebegin', message)
+    const message = 'Veuillez choisir entre le débit et le crédit !!!'
+    document.getElementById("msgSecu").innerText = message
     document.getElementById("operator").focus()
   } else if (operationForm.titre.value != '' && operationForm.montant.value != '') {
-    const operator = operationForm.operator.value
-    const titre = operationForm.titre.value
-    const desc = operationForm.desc.value
-    const montant = operationForm.montant.value
-
-    const op = createOperation(operator, titre, desc, montant)
+    e.preventDefault()
+    const op = createOperation(
+      operationForm.operator.value,
+      operationForm.titre.value,
+      operationForm.desc.value,
+      operationForm.montant.value
+    )
     operationsData.push(op)
     localStorage.setItem('datas', JSON.stringify(operationsData))
+
+    // Ferme la modale du form
+    document.querySelector('.reveal-overlay').style.display = 'none'
+    document.querySelector('html').className = ''
+    
+    // Nettoyage et rechargement des différents éléments
+    cleanSubmitForm(operationForm)
+    setHeader(operationsData)
+    readAllGraph(operationsData)
+    readAllOperations(operationsData)
   }
 })
 
